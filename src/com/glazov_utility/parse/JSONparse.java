@@ -2,17 +2,29 @@ package com.glazov_utility.parse;
 
 import org.json.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class JSONparse {
-    public static void CountriesParse(String json,String opt1,String opt2,String opt3) {
+    public static HashMap<String, String> CountriesStationParse(String json, String opt1, String opt2) {
         JSONArray jsonarray = new JSONArray(json);
+        HashMap<String, String> stations =
+                new HashMap<>();
         for (int i = 0; i < jsonarray.length(); i++) {
             JSONObject jsonobject = jsonarray.getJSONObject(i);
             String name = jsonobject.getString(opt1);
             String name2 = jsonobject.getString(opt2);
-            int num = jsonobject.getInt(opt3);
-            System.out.println(name);
-            System.out.println(name2);
-            System.out.println(num);
+            stations.put(name, name2);
         }
+        return stations;
+    }
+    public static HashMap<String,String> CountriesParse(String json,String opt1,String opt2) {
+        JSONArray jsonarray = new JSONArray(json);
+        HashMap<String,String> countries = new HashMap<>();
+        for (int i = 0; i < jsonarray.length(); i++) {
+            JSONObject jsonobject = jsonarray.getJSONObject(i);
+            countries.put(jsonobject.getString(opt1), String.valueOf(jsonobject.getInt(opt2)));
+        }
+        return countries;
     }
 }
