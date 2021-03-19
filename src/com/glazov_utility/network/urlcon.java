@@ -6,7 +6,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class urlcon {
-    public static StringBuilder urlcon(String url) throws Exception {
+    public static String urlcon(String url) throws Exception {
         URLConnection connection = new URL(url).openConnection();
 
         InputStream is = connection.getInputStream();
@@ -21,6 +21,6 @@ public class urlcon {
 
         reader.close();
 
-        return sb;
+        return sb.toString();
     }
 }
