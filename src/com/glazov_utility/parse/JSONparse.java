@@ -18,12 +18,12 @@ public class JSONparse {
         }
         return stations;
     }
-    public static HashMap<String,String> CountriesParse(String json,String opt1,String opt2) {
+    public static ArrayList<String> CountriesParse(String json,String opt1,String opt2) {
         JSONArray jsonarray = new JSONArray(json);
-        HashMap<String,String> countries = new HashMap<>();
+        ArrayList<String> countries = new ArrayList<>();
         for (int i = 0; i < jsonarray.length(); i++) {
             JSONObject jsonobject = jsonarray.getJSONObject(i);
-            countries.put(jsonobject.getString(opt1), String.valueOf(jsonobject.getInt(opt2)));
+            countries.add(jsonobject.getString(opt1) + " " + String.valueOf(jsonobject.getInt(opt2)));
         }
         return countries;
     }
