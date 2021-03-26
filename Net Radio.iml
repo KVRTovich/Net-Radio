@@ -9,5 +9,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="org.json:json:20210307" level="project" />
     <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="javax.media:jmf:2.1.1e" level="project" />
+    <orderEntry type="library" name="uk.co.caprica:vlcj:4.7.0" level="project" />
   </component>
 </module>
