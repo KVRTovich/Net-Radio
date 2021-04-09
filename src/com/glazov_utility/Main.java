@@ -15,27 +15,50 @@ import javax.swing.event.ChangeListener;
 
 public class Main {
     public static final String Countries = "https://de1.api.radio-browser.info/json/countries";
+    public static final String tags = "https://de1.api.radio-browser.info/json/tags/";
+    public static final String tagsStation = "https://de1.api.radio-browser.info/json/stations/bytag/";
     public static final String CountriesStation = "https://de1.api.radio-browser.info/json/stations/bycountry/";
     private static String[] countriesunv;
     private static String govnovar;
     private static String CountryName;
     private static String URL;
     public static void GUI()  throws Exception{
-        JFrame frame = new JFrame("Net Radio");
+      JFrame frame = new JFrame("Net Radio");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(320,480));
-        countriesunv = JSONparse.CountriesParse(urlcon.urlcon(Countries),"name","stationcount").toArray(new String[0]);
-        JList<String> list1 = new JList<>(countriesunv);
+        JList<String> list1 = new JList<>(JSONparse.CountriesParse(urlcon.urlcon(Countries),"name","stationcount").toArray(new String[0]));
+        JList<String> list2 = new JList<>(JSONparse.CountriesParse(urlcon.urlcon(tags),"name","stationcount").toArray(new String[0]));
+        JTabbedPane jtp = new JTabbedPane();
+        JComponent panel1 = new JPanel();
+        panel1.setLayout(new GridLayout(1,3));
+        panel1.add(new JScrollPane(list1));
+        JComponent panel2 = new JPanel();
+        panel2.setLayout(new GridLayout(1,3));
+        panel2.add(new JScrollPane(list2));
+        jtp.add("Countries",panel1);
+        jtp.add("Tags",panel2);
         list1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
                 if (evt.getClickCount() == 2) {
-                   // System.out.println(list1.getSelectedValue());
                     govnovar = StringTrim.StringTrim(list1.getSelectedValue());
                     CountryName = list1.getSelectedValue();
-                  //  System.out.println(govnovar);
                     try {
-                        StationSelect();
+                        StationSelect(CountriesStation);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        list2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+                    govnovar = StringTrim.StringTrim(list2.getSelectedValue().replaceAll("#",""));
+                    CountryName = list2.getSelectedValue().replaceAll("#","");
+                    try {
+                        StationSelect(tagsStation);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -44,28 +67,30 @@ public class Main {
         });
         frame.pack();
         frame.setResizable(false);
-        frame.add(new JScrollPane(list1));
+        frame.add(jtp);
         frame.setVisible(true);
     }
-    public static void StationSelect() throws Exception {
+
+    public static void StationSelect(String type) throws Exception {
         JFrame frame = new JFrame("Net Radio - Stations");
         frame.setPreferredSize(new Dimension(320,480));
-        countriesunv = JSONparse.CountriesStationParse(urlcon.urlcon(CountriesStation + govnovar),"name","url").keySet().toArray(new String[0]);
+        countriesunv = JSONparse.CountriesStationParse(urlcon.urlcon(type + govnovar),"name","url").keySet().toArray(new String[0]);
         JList<String> list1 = new JList<>(countriesunv);
         list1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
                 if (evt.getClickCount() == 2) {
-                //    System.out.println(list1.getSelectedValue());
                     try {
-                        URL = JSONparse.CountriesStationParse(urlcon.urlcon(CountriesStation + govnovar), "name", "url").get(list1.getSelectedValue());
+                        URL = JSONparse.CountriesStationParse(urlcon.urlcon(type  + govnovar ), "name", "url").get(list1.getSelectedValue());
+                        System.out.println(URL);
                         playerGUI(list1.getSelectedValue(),CountryName.replaceAll("\\d",""), URL);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        e.printStackTrace();F
                     }
                 }
             }
         });
+
         frame.add(new JScrollPane(list1));
         frame.setResizable(false);
         frame.pack();
