@@ -85,7 +85,7 @@ public class Main {
                         System.out.println(URL);
                         playerGUI(list1.getSelectedValue(),CountryName.replaceAll("\\d",""), URL);
                     } catch (Exception e) {
-                        e.printStackTrace();F
+                        e.printStackTrace();
                     }
                 }
             }
